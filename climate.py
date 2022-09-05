@@ -42,7 +42,8 @@ class LGAirconCoordinator(DataUpdateCoordinator):
     """LG Aircon Coordinator"""
 
     def __init__(self, hass):
-        super().__init__(hass, _LOGGER, name="LGAircon", update_interval=timedelta(seconds=30))
+        # super().__init__(hass, _LOGGER, name="LGAircon", update_interval=timedelta(seconds=30))
+        pass
 
     async def _async_update_data(self):
         """Fetch data from API endpont"""
