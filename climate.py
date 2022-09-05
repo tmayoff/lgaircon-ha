@@ -48,7 +48,7 @@ class LGAirconCoordinator(DataUpdateCoordinator):
             _LOGGER,
             name="LG Aircon",
             update_interval=timedelta(seconds=10))
-        pass
+        self._hass = hass
 
     def update():
         api_url = "http://10.0.0.237:8000/state"
