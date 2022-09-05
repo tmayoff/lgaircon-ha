@@ -50,12 +50,15 @@ class LGAirconCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=10))
         pass
 
+    def update():
+        api_url = "http://10.0.0.237:8000/state"
+        return requests.get(api_url).json
+
     async def _async_update_data(self):
         """Fetch data from API endpont"""
         try:
-            api_url = "http://10.0.0.237:8000/state"
             async with async_timeout.timeout(10):
-             return await requests.get(api_url).json
+                return await self._hass.async_add_executor_job(self.update)
         except Exception as err:
             raise UpdateFailed(f"Failed to communicate with API {err}")
 
