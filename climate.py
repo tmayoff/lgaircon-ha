@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from datetime import timedelta
 import async_timeout
+import logging
+import requests
 
 from homeassistant.components.climate import (
     ClimateEntity,
@@ -23,7 +25,7 @@ from homeassistant.helpers.update_coordinator import (
     UpdateFailed,
 )
 
-import requests
+_LOGGER = logging.getLogger(__name__)
 
 def setup_platform(
         hass: HomeAssistant,
@@ -36,17 +38,11 @@ def setup_platform(
     aircons = [LGAircon(coordinator)]
     add_entities(aircons)
 
-# async def async_setup_entry(hass, entry, async_add_entities):
-#     """Config entry"""
-#     await coordinator.async_config_entry_first_refresh()
-
-#     async_add_entities()
-
 class LGAirconCoordinator(DataUpdateCoordinator):
     """LG Aircon Coordinator"""
 
     def __init__(self, hass):
-        super().__init__(hass, name="LGAircon", update_interval=timedelta(seconds=30))
+        super().__init__(hass, _LOGGER, name="LGAircon", update_interval=timedelta(seconds=30))
 
     async def _async_update_data(self):
         """Fetch data from API endpont"""
