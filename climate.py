@@ -95,7 +95,7 @@ class LGAircon(ClimateEntity):
 
     def fetch(self):
         api_url = "http://10.0.0.237:8000/state"
-        res = requests.get(api_url).json
+        res = requests.get(api_url).text.json()
         self._current_temp = res["cur_temp"]
     
     async def async_update(self):        
