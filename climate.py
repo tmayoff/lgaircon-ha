@@ -57,7 +57,7 @@ class LGAirconCoordinator(DataUpdateCoordinator):
 class LGAircon(LGAirconCoordinator, ClimateEntity):
     _attr_has_entity_name = True
 
-    def __init__(self, coord):
+    def __init__(self, coordinator):
         super().__init__(coordinator)
         self.idx = idx
 
