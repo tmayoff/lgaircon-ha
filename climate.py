@@ -34,9 +34,9 @@ async def async_setup_platform(
         discovery_info: DiscoveryInfoType | None = None
         ) -> None:
 
-    coordinator = LGAirconCoordinator(hass)
+    # coordinator = LGAirconCoordinator(hass)
 
-    aircons = [LGAircon(coordinator)]
+    aircons = [LGAircon()]
     async_add_entities(aircons)
 
 class LGAirconCoordinator(DataUpdateCoordinator):
@@ -62,11 +62,11 @@ class LGAirconCoordinator(DataUpdateCoordinator):
         except Exception as err:
             raise UpdateFailed(f"Failed to communicate with API {err}")
 
-class LGAircon(CoordinatorEntity, ClimateEntity):
+class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
 
-    def __init__(self, coordinator):
-        super().__init__(coordinator)
+    def __init__(self):
+        # super().__init__(coordinator)
 
         self._attr_name = "LG Aircon"
         self._attr_min_temp = 18
@@ -92,8 +92,16 @@ class LGAircon(CoordinatorEntity, ClimateEntity):
         self._attr_supported_features = 0
         self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
 
-    @callback
-    def _handle_coordinator_update(self) -> None:
-        if self.coordinator.data:
-            self._current_temp = self.coordinator.data["cur_temp"]
-            self.async_write_ha_state()
+    def fetch(self):
+        api_url = "http://10.0.0.237:8000/state"
+        return requests.get(api_url).json
+    
+    def async_update(self):        
+        res = await self._hass.async_add_executor_job(self.fetch)
+        self._current_temp = res["cur_temp"]
+
+    # @callback
+    # def _handle_coordinator_update(self) -> None:
+    #     if self.coordinator.data:
+    #         self._current_temp = self.coordinator.data["cur_temp"]
+    #         self.async_write_ha_state()
