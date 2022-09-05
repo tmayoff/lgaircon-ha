@@ -75,9 +75,9 @@ class LGAircon(ClimateEntity):
         self._current_temp = state["cur_temp"]
 
         mode = state["mode"]
-        if mode == ""
+        if mode == "Off":
             self._current_operation = HVACMode.OFF
-        elif mode == "Cool"
+        elif mode == "Cool":
             self._current_operation = HVACMode.COOL
     
     async def async_update(self):        
