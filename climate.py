@@ -50,7 +50,7 @@ class LGAirconCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=10))
         self._hass = hass
 
-    def update():
+    def update(self):
         api_url = "http://10.0.0.237:8000/state"
         return requests.get(api_url).json
 
