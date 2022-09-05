@@ -30,21 +30,24 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_platform(
         hass: HomeAssistant,
         config: ConfigType,
-        add_entities: AddEntitiesCallback,
+        async_add_entities: AddEntitiesCallback,
         discovery_info: DiscoveryInfoType | None = None
         ) -> None:
 
     coordinator = LGAirconCoordinator(hass)
-    await coordinator.async_refresh()
 
     aircons = [LGAircon(coordinator)]
-    add_entities(aircons)
+    async_add_entities(aircons)
 
 class LGAirconCoordinator(DataUpdateCoordinator):
     """LG Aircon Coordinator"""
 
     def __init__(self, hass):
-        # super().__init__(hass, _LOGGER, name="LGAircon", update_interval=timedelta(seconds=30))
+        super().__init__(
+            hass, 
+            _LOGGER,
+            name="My sensor",
+            update_interval=timedelta(seconds=30))
         pass
 
     async def _async_update_data(self):
