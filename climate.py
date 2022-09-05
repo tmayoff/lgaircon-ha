@@ -72,7 +72,8 @@ class LGAircon(ClimateEntity):
         res = requests.get(api_url)
         state = res.json()
         _LOGGER.info(state)
-        self._current_temp = state["cur_temp"]
+        self._current_temp = state["current_temp"]
+        self._target_temp = state["target_temp"]
 
         mode = state["mode"]
         if mode == "Off":
