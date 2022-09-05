@@ -28,7 +28,9 @@ def setup_platform(
         add_entities: AddEntitiesCallback,
         discovery_info: DiscoveryInfoType | None = None
         ) -> None:
-    aircons = [LGAircon()]
+
+    coordinator = LGAirconCoordinator(hass)
+    aircons = [LGAircon(coordinator)]
     add_entities(aircons)
 
 # async def async_setup_entry(hass, entry, async_add_entities):
@@ -40,8 +42,8 @@ def setup_platform(
 class LGAirconCoordinator(DataUpdateCoordinator):
     """LG Aircon Coordinator"""
 
-    def __init__(self, hass, api):
-        self.api = api
+    def __init__(self, hass):
+        super()__init__(hass, name="LGAircon", update_interval=timedelta(seconds=30))
 
     async def _async_update_data(self):
         """Fetch data from API endpont"""
@@ -56,7 +58,7 @@ class LGAirconCoordinator(DataUpdateCoordinator):
 class LGAircon(LGAirconCoordinator, ClimateEntity):
     _attr_has_entity_name = True
 
-    def __init__(self, coord, idx):
+    def __init__(self, coord):
         super().__init__(coordinator)
         self.idx = idx
 
