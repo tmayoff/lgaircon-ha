@@ -84,7 +84,6 @@ class LGAircon(LGAirconCoordinator, ClimateEntity):
         self._attr_supported_features = 0
         self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
 
-    @callback
     def _handle_coordinator_update(self) -> None: 
         self._current_temp = self.coordinator.data[self.idx]["cur_temp"]
         self.async_write_ha_state()
