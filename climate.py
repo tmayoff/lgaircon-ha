@@ -16,7 +16,7 @@ from homeassistant.components.climate.const import (
         FAN_ON, FAN_OFF, FAN_LOW, FAN_MEDIUM, FAN_HIGH,
         SWING_OFF
 )
-from homeassistant.core import HomeAssistant
+from homeassistant.core import (HomeAssistant, callback)
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 from homeassistant.helpers.update_coordinator import (
@@ -85,6 +85,7 @@ class LGAircon(LGAirconCoordinator, ClimateEntity):
         self._attr_supported_features = 0
         self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
 
+    @callback
     def _handle_coordinator_update(self) -> None: 
         self._current_temp = self.coordinator.data[self.idx]["cur_temp"]
         self.async_write_ha_state()
