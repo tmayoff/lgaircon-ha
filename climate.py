@@ -60,7 +60,7 @@ class LGAirconCoordinator(DataUpdateCoordinator):
         except:
             raise UpdateFailed("Failed to communicate with API")
 
-class LGAircon(LGAirconCoordinator, ClimateEntity):
+class LGAircon(CoordinatorEntity, ClimateEntity):
     _attr_has_entity_name = True
 
     def __init__(self, coordinator):
