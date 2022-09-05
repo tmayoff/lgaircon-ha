@@ -92,5 +92,6 @@ class LGAircon(CoordinatorEntity, ClimateEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None: 
-        self._current_temp = self.coordinator.data["cur_temp"]
-        self.async_write_ha_state()
+        if self.coordinator.data:
+            self._current_temp = self.coordinator.data["cur_temp"]
+            self.async_write_ha_state()
