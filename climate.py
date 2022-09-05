@@ -34,40 +34,14 @@ async def async_setup_platform(
         discovery_info: DiscoveryInfoType | None = None
         ) -> None:
 
-    # coordinator = LGAirconCoordinator(hass)
-
     aircons = [LGAircon(hass)]
     async_add_entities(aircons)
-
-class LGAirconCoordinator(DataUpdateCoordinator):
-    """LG Aircon Coordinator"""
-
-    def __init__(self, hass):
-        super().__init__(
-            hass, 
-            _LOGGER,
-            name="LG Aircon",
-            update_interval=timedelta(seconds=10))
-        self._hass = hass
-
-    def update(self):
-        api_url = "http://10.0.0.237:8000/state"
-        return requests.get(api_url).json
-
-    async def _async_update_data(self):
-        """Fetch data from API endpont"""
-        try:
-            async with async_timeout.timeout(10):
-                return await self._hass.async_add_executor_job(self.update)
-        except Exception as err:
-            raise UpdateFailed(f"Failed to communicate with API {err}")
 
 class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
 
     def __init__(self, hass):
         self._hass = hass
-        # super().__init__(coordinator)
 
         self._attr_name = "LG Aircon"
         self._attr_min_temp = 18
@@ -99,6 +73,12 @@ class LGAircon(ClimateEntity):
         state = res.json()
         _LOGGER.info(state)
         self._current_temp = state["cur_temp"]
+
+        mode = state["mode"]
+        if mode == ""
+            self._current_operation = HVACMode.OFF
+        elif mode == "Cool"
+            self._current_operation = HVACMode.COOL
     
     async def async_update(self):        
         await self._hass.async_add_executor_job(self.fetch)
@@ -107,8 +87,10 @@ class LGAircon(ClimateEntity):
     def current_temperature(self):
         return self._current_temp
 
-    # @callback
-    # def _handle_coordinator_update(self) -> None:
-    #     if self.coordinator.data:
-    #         self._current_temp = self.coordinator.data["cur_temp"]
-    #         self.async_write_ha_state()
+    @property
+    def target_temperature(self):
+        return self._target_temp
+
+    @property
+    def hvac_mode(self):
+        return self._current_operation
