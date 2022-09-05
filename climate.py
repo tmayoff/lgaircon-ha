@@ -27,7 +27,7 @@ from homeassistant.helpers.update_coordinator import (
 
 _LOGGER = logging.getLogger(__name__)
 
-def setup_platform(
+async def async_setup_platform(
         hass: HomeAssistant,
         config: ConfigType,
         add_entities: AddEntitiesCallback,
@@ -35,7 +35,9 @@ def setup_platform(
         ) -> None:
 
     coordinator = LGAirconCoordinator(hass)
-    aircons = [LGAircon(coordinator, 0)]
+    await coordinator.async_refresh()
+
+    aircons = [LGAircon(coordinator)]
     add_entities(aircons)
 
 class LGAirconCoordinator(DataUpdateCoordinator):
@@ -58,9 +60,8 @@ class LGAirconCoordinator(DataUpdateCoordinator):
 class LGAircon(LGAirconCoordinator, ClimateEntity):
     _attr_has_entity_name = True
 
-    def __init__(self, coordinator, idx):
+    def __init__(self, coordinator):
         super().__init__(coordinator)
-        self.idx = idx
 
         self._attr_name = "LG Aircon"
         self._attr_min_temp = 18
@@ -88,5 +89,5 @@ class LGAircon(LGAirconCoordinator, ClimateEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None: 
-        self._current_temp = self.coordinator.data[self.idx]["cur_temp"]
+        self._current_temp = self.coordinator.data["cur_temp"]
         self.async_write_ha_state()
