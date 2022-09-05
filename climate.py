@@ -24,6 +24,12 @@ def setup_platform(
     aircons = [LGAircon()]
     add_entities(aircons)
 
+class LGAirconCoordinator(DataUpdateCoordinator):
+    """LG Aircon Coordinator"""
+
+    def __init__(self, hass, api):
+        self.api = api
+
 class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
 
