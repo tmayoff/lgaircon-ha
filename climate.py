@@ -14,6 +14,11 @@ from homeassistant.components.climate.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from homeassistant.helpers.update_coordinator import (
+    CoordinatorEntitity,
+    DataUpdateCoordinator,
+    UpdateFailed,
+)
 
 import requests
 
@@ -25,6 +30,12 @@ def setup_platform(
         ) -> None:
     aircons = [LGAircon()]
     add_entities(aircons)
+
+# async def async_setup_entry(hass, entry, async_add_entities):
+#     """Config entry"""
+#     await coordinator.async_config_entry_first_refresh()
+
+#     async_add_entities()
 
 class LGAirconCoordinator(DataUpdateCoordinator):
     """LG Aircon Coordinator"""
