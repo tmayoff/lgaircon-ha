@@ -36,12 +36,19 @@ class LGAirconCoordinator(DataUpdateCoordinator):
         """Fetch data from API endpont"""
 
         try:
-            
+            api_url = "http://10.0.0.237:8000/state"
+            async with async_timeout.timeout(10):
+             return await requests.get(api_url).json
+        except:
+            raise UpdateFailed("Failed to communicate with API")
 
-class LGAircon(ClimateEntity):
+class LGAircon(LGAirconCoordinator, ClimateEntity):
     _attr_has_entity_name = True
 
-    def __init__(self):
+    def __init__(self, coord, idx):
+        super().__init__(coordinator)
+        self.idx = idx
+
         self._attr_name = "LG Aircon"
         self._attr_min_temp = 18
         self._attr_max_temp = 30
@@ -66,8 +73,7 @@ class LGAircon(ClimateEntity):
         self._attr_supported_features = 0
         self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
 
-    def async_update(self): 
-        api_url = "http://10.0.0.237:8000/state"
-        res = requests.get(api_url)
-        state = res.json()
-        self._current_temp = state["cur_temp"]
+    @callback
+    def _handle_coordinator_update(self) -> None: 
+        self._current_temp = self.coordinator.data[self.idx]["cur_temp"]
+        self.async_write_ha_state()
