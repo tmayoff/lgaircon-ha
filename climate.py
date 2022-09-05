@@ -15,6 +15,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
+import requests
+
 def setup_platform(
         hass: HomeAssistant,
         config: ConfigType,
@@ -51,3 +53,9 @@ class LGAircon(ClimateEntity):
 
         self._attr_supported_features = 0
         self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
+
+    def async_update(self): 
+        api_url = "http://10.0.0.237:8000/state"
+        res = requests.get(api_url)
+        state = res.json()
+        self._current_temp = state["cur_temp"]
