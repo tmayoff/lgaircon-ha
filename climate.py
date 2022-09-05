@@ -46,19 +46,17 @@ class LGAirconCoordinator(DataUpdateCoordinator):
         super().__init__(
             hass, 
             _LOGGER,
-            name="My sensor",
-            update_interval=timedelta(seconds=30))
+            name="LG Aircon",
+            update_interval=timedelta(seconds=10))
         pass
 
     async def _async_update_data(self):
         """Fetch data from API endpont"""
-        _LOGGER.info("Fetching")
-
         try:
             api_url = "http://10.0.0.237:8000/state"
             async with async_timeout.timeout(10):
              return await requests.get(api_url).json
-        except err:
+        except Exception as err:
             raise UpdateFailed(f"Failed to communicate with API {err}")
 
 class LGAircon(CoordinatorEntity, ClimateEntity):
