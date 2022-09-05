@@ -103,6 +103,10 @@ class LGAircon(ClimateEntity):
     async def async_update(self):        
         await self._hass.async_add_executor_job(self.fetch)
 
+    @property
+    def current_temperature(self):
+        return self._current_temp
+
     # @callback
     # def _handle_coordinator_update(self) -> None:
     #     if self.coordinator.data:
