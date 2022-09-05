@@ -36,7 +36,7 @@ async def async_setup_platform(
 
     # coordinator = LGAirconCoordinator(hass)
 
-    aircons = [LGAircon()]
+    aircons = [LGAircon(hass)]
     async_add_entities(aircons)
 
 class LGAirconCoordinator(DataUpdateCoordinator):
@@ -65,7 +65,8 @@ class LGAirconCoordinator(DataUpdateCoordinator):
 class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
 
-    def __init__(self):
+    def __init__(self, hass):
+        self._hass = hass
         # super().__init__(coordinator)
 
         self._attr_name = "LG Aircon"
