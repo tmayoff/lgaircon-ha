@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from datetime import timedelta
+import async_timeout
+
 from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityFeature,
