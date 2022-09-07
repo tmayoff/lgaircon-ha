@@ -56,6 +56,7 @@ class LGAircon(ClimateEntity):
         self._target_temp = 20
         self._attr_target_temperature_high = None
         self._attr_target_temperature_low = None
+        self._attr_target_temperature_step = 1
 
         self._attr_temperature_unit = TEMP_CELSIUS
         self._attr_hvac_mode = HVACMode.OFF
@@ -67,7 +68,6 @@ class LGAircon(ClimateEntity):
         self._attr_supported_features = 0
         self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
         self._attr_supported_features |= ClimateEntityFeature.TARGET_TEMPERATURE
-        self._attr_supported_features |= ClimateEntityFeature.SWING_MODE
 
     def fetch_state(self):
         api_url = "http://10.0.0.237:8000/state"
@@ -101,14 +101,6 @@ class LGAircon(ClimateEntity):
     @property
     def current_temperature(self):
         return self._current_temp
-
-    @property
-    def target_temperature_low(self):
-        return self._attr_min_temp
-
-    @property
-    def target_temperature_high(self):
-        return self._attr_max_temp
 
     @property
     def target_temperature_step(self):
