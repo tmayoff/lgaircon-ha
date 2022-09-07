@@ -79,6 +79,11 @@ class LGAircon(ClimateEntity):
             self._current_operation = HVACMode.OFF
         elif mode == "Cool":
             self._current_operation = HVACMode.COOL
+        elif mode == "Heat"
+            self._current_operation = HVACMode.HEAT
+        elif mode == "Dehum"
+            self._current_operation = HVACMode.DRY
+        elif mode == "Fan"
     
     def fetch_temperature(self):
         api_url = "http://10.0.0.237:8000/current_temp"
@@ -93,6 +98,18 @@ class LGAircon(ClimateEntity):
     @property
     def current_temperature(self):
         return self._current_temp
+
+    @property
+    def target_temperature_low(self):
+        return self._attr_min_temp
+
+    @property
+    def target_temperature_high(self):
+        return self._attr_max_temp
+
+    @property
+    def target_temperature_step(self):
+        return 1
 
     @property
     def target_temperature(self):
