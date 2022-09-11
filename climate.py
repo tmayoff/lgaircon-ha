@@ -124,13 +124,13 @@ class LGAircon(ClimateEntity):
 
     async def async_set_hvac_mode(self, hvac_mode):
         self._current_operation = hvac_mode
-        await self.send_update_state()
+        await self._hass.async_add_executor_job(self.send_update_state)
 
     async def async_set_fan_mode(self, fan_mode):
         self._current_fan_mode = fan_mode
-        await self.send_update_state()
+        await self._hass.async_add_executor_job(self.send_update_state)
 
     async def async_set_temperature(self, **kwargs):
         print(kwargs)
         _LOGGER.info(kwargs)
-        await self.send_update_state()
+        await self._hass.async_add_executor_job(self.send_update_state)
