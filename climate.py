@@ -124,7 +124,7 @@ class LGAircon(ClimateEntity):
 
     async def async_set_hvac_mode(self, hvac_mode):
         self._current_operation = hvac_mode
-        self.send_update_state()
+        await self.send_update_state()
 
     async def async_set_fan_mode(self, fan_mode):
         self._current_fan_mode = fan_mode
