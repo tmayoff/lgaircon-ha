@@ -131,7 +131,6 @@ class LGAircon(ClimateEntity):
         self.send_update_state()
 
     async def async_set_temperature(self, **kwargs):
-        self._target_temp = 
         print(kwargs)
         _LOGGER.info(kwargs)
         self.send_update_state()
