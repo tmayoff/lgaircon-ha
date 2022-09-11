@@ -94,6 +94,14 @@ class LGAircon(ClimateEntity):
         temp = res.json()
         self._current_temp = temp
 
+    async def send_update_state(self):
+        api_url = "http://10.0.0.237:8000/state"
+        state = {
+            'mode': self._current_operation,
+            'target_temp': self._target_temp
+            }
+        res = requests.post(api_url)
+
     async def async_update(self):
         await self._hass.async_add_executor_job(self.fetch_state)
         await self._hass.async_add_executor_job(self.fetch_temperature)
@@ -113,3 +121,17 @@ class LGAircon(ClimateEntity):
     @property
     def hvac_mode(self):
         return self._current_operation
+
+    async def async_set_hvac_mode(self, hvac_mode):
+        self._current_operation = hvac_mode
+        self.send_update_state()
+
+    async def async_set_fan_mode(self, fan_mode):
+        self._current_fan_mode = fan_mode
+        self.send_update_state()
+
+    async def async_set_temperature(self, **kwargs):
+        self._target_temp = 
+        print(kwargs)
+        _LOGGER.info(kwargs)
+        self.send_update_state()
