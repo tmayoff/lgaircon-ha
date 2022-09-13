@@ -71,7 +71,7 @@ class LGAircon(ClimateEntity):
         self._attr_supported_features |= ClimateEntityFeature.TARGET_TEMPERATURE
 
     def fetch_state(self):
-        api_url = "http://aircon.local:8000/state"
+        api_url = "http://10.0.0.84:8000/state"
         res = requests.get(api_url)
         state = res.json()
         _LOGGER.info(state)
@@ -90,13 +90,13 @@ class LGAircon(ClimateEntity):
             self._current_operation = HVACMode.FAN_ONLY
 
     def fetch_temperature(self):
-        api_url = "http://aircon.local:8000/current_temp"
+        api_url = "http://10.0.0.84:8000/current_temp"
         res = requests.get(api_url)
         temp = res.json()
         self._current_temp = temp
 
     async def send_update_state(self):
-        api_url = "http://aircon.local:8000/state"
+        api_url = "http://10.0.0.84:8000/state"
         state = {
             'mode': self._current_operation,
             'target_temp': self._target_temp
