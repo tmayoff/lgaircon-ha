@@ -16,6 +16,7 @@ from homeassistant.components.climate.const import (
         FAN_ON, FAN_OFF, FAN_LOW, FAN_MEDIUM, FAN_HIGH,
         SWING_OFF
 )
+from homeassistant import config_entries
 from homeassistant.core import (HomeAssistant, callback)
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
