@@ -16,7 +16,6 @@ from homeassistant.components.climate.const import (
         FAN_ON, FAN_OFF, FAN_LOW, FAN_MEDIUM, FAN_HIGH,
         SWING_OFF
 )
-from homeassistant import config_entries
 from homeassistant.core import (HomeAssistant, callback)
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
@@ -39,11 +38,6 @@ async def async_setup_platform(
 
     aircons = [LGAircon(hass)]
     async_add_entities(aircons)
-
-class LGAirconConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    async def async_step_dhcp(self, info):
-        if info is not None:
-            pass
 
 class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
