@@ -39,12 +39,10 @@ async def async_setup_platform(
     aircons = [LGAircon(hass)]
     async_add_entities(aircons)
 
-# class LGAirconConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-#     async def async_step_user(self, info):
-#         if info is not None:
-#             pass
-
-#         return self.async_show_form(step_id = "user", data_schema=vol.Schema({vol.Required("name"): str}))
+class LGAirconConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    async def async_step_dhcp(self, info):
+        if info is not None:
+            pass
 
 class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
