@@ -26,6 +26,7 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 _LOGGER = logging.getLogger(__name__)
+SCAN_INTERVAL = timedelta(seconds=10)
 
 async def async_setup_platform(
         hass: HomeAssistant,
@@ -35,7 +36,7 @@ async def async_setup_platform(
         ) -> None:
 
     aircons = [LGAircon(hass)]
-    async_add_entities(aircons)
+    async_add_entities(aircons, True)
 
 class LGAirconCoordinator(DataUpdateCoordinator):
     def __init__(self, hass):
