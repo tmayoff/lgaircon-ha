@@ -64,7 +64,7 @@ class LGAircon(ClimateEntity):
 
         self._attr_fan_modes = [FAN_ON, FAN_OFF, FAN_LOW, FAN_MEDIUM, FAN_HIGH]
         self._attr_fan_mode = FAN_OFF
-        self._attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.COOL, HVACMode.FAN_ONLY]
+        self._attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.COOL, HVACMode.DRY, HVACMode.FAN_ONLY]
 
         self._attr_supported_features = 0
         self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
