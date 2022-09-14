@@ -101,7 +101,7 @@ class LGAircon(ClimateEntity):
             'mode': self._current_operation,
             'target_temp': self._target_temp
             }
-        res = requests.post(api_url, json=state)
+        requests.post(api_url, json=state)
 
     async def async_update(self):
         await self._hass.async_add_executor_job(self.fetch_state)
@@ -129,7 +129,7 @@ class LGAircon(ClimateEntity):
 
     async def async_set_fan_mode(self, fan_mode):
         self._current_fan_mode = fan_mode
-        await self._hass.async_add_executor_job(self.send_update_state)
+        self._hass.async_create_task(self.send_update_state())
 
     async def async_set_temperature(self, **kwargs):
         print(kwargs)
