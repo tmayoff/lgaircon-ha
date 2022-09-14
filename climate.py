@@ -101,7 +101,7 @@ class LGAircon(ClimateEntity):
             'mode': self._current_operation,
             'target_temp': self._target_temp
             }
-        res = requests.post(api_url)
+        res = requests.post(api_url, json=state)
 
     async def async_update(self):
         await self._hass.async_add_executor_job(self.fetch_state)
