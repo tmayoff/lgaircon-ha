@@ -96,7 +96,7 @@ class LGAircon(ClimateEntity):
         self._current_temp = temp
 
     def send_update_state(self):
-        api_url = "http://10.0.0.84:8000/state"
+        api_url = "http://10.0.0.84:8000/set_state"
         state = {
             'mode': self._current_operation,
             'target_temp': self._target_temp
