@@ -38,6 +38,32 @@ async def async_setup_platform(
     aircons = [LGAircon(hass)]
     async_add_entities(aircons)
 
+def HVACModeToString(hvac_mode):
+    # self._attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.COOL, HVACMode.DRY, HVACMode.FAN_ONLY]
+    if hvac_mode == HVACMode.OFF:
+        return "Off"
+    elif hvac_mode == HVACMode.HEAT:
+        return "Heat"
+    elif hvac_mode == HVACMode.COOL:
+        return "AC"
+    elif hvac_mode == HVACMode.DRY:
+        return "Dehumidifier"
+    elif hvac_mode == HVACMode.FAN_ONLY:
+        return "Fan"
+
+def FANModeToString(fan_mode):
+    # self._attr_fan_modes = [FAN_ON, FAN_OFF, FAN_LOW, FAN_MEDIUM, FAN_HIGH]
+    if fan_mode == FAN_ON:
+        return ""
+    elif fan_mode == FAN_OFF:
+        return ""
+    elif fan_mode == FAN_LOW:
+        return "Low"
+    elif fan_mode == FAN_MEDIUM:
+        return "Medium"
+    elif fan_mode == FAN_HIGH:
+        return "High"
+
 class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
 
@@ -102,10 +128,15 @@ class LGAircon(ClimateEntity):
 
     def send_update_state(self):
         api_url = "http://10.0.0.84:8000/state"
-        # TODO #3 fill this out
         state = {
+            'updated': True,
             'mode': self._current_operation,
-            'target_temp': self._target_temp
+            'min_temp': self._attr_min_temp,
+            'max_temp': self._attr_max_temp,
+            'target_temp': self._target_temp,
+            'fan_speed': 0,
+            'fan_mode': FANModeToString(self._current_fan_mode),
+            'mode': HVACModeToString(self._current_operation)
             }
 
         try:
