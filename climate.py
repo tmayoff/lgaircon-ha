@@ -72,22 +72,24 @@ class LGAircon(ClimateEntity):
 
     def fetch_state(self):
         api_url = "http://10.0.0.84:8000/state"
-        res = requests.get(api_url)
-        state = res.json()
-        _LOGGER.info(state)
-        self._target_temp = state["target_temp"]
-
-        mode = state["mode"]
-        if mode == "Off":
-            self._current_operation = HVACMode.OFF
-        elif mode == "Cool":
-            self._current_operation = HVACMode.COOL
-        elif mode == "Heat":
-            self._current_operation = HVACMode.HEAT
-        elif mode == "Dehum":
-            self._current_operation = HVACMode.DRY
-        elif mode == "Fan":
-            self._current_operation = HVACMode.FAN_ONLY
+        try:
+            res = requests.get(api_url)
+            state = res.json()
+            _LOGGER.info(state)
+            self._target_temp = state["target_temp"]
+            mode = state["mode"]
+            if mode == "Off":
+                self._current_operation = HVACMode.OFF
+            elif mode == "Cool":
+                self._current_operation = HVACMode.COOL
+            elif mode == "Heat":
+                self._current_operation = HVACMode.HEAT
+            elif mode == "Dehum":
+                self._current_operation = HVACMode.DRY
+            elif mode == "Fan":
+                self._current_operation = HVACMode.FAN_ONLY
+        except requests.RequestException as e:
+            print(str(e))
 
     def fetch_temperature(self):
         api_url = "http://10.0.0.84:8000/current_temp"
@@ -112,8 +114,11 @@ class LGAircon(ClimateEntity):
             print(str(e))
 
     async def async_update(self):
-        await self._hass.async_add_executor_job(self.fetch_state)
-        await self._hass.async_add_executor_job(self.fetch_temperature)
+        try:
+            await self._hass.async_add_executor_job(self.fetch_state)
+            await self._hass.async_add_executor_job(self.fetch_temperature)
+        except Exception:
+            print("Error fetching data")
 
     @property
     def current_temperature(self):
