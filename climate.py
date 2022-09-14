@@ -95,7 +95,7 @@ class LGAircon(ClimateEntity):
         temp = res.json()
         self._current_temp = temp
 
-    async def send_update_state(self):
+    def send_update_state(self):
         api_url = "http://10.0.0.84:8000/state"
         state = {
             'mode': self._current_operation,
@@ -123,9 +123,9 @@ class LGAircon(ClimateEntity):
     def hvac_mode(self):
         return self._current_operation
 
-    async def async_set_hvac_mode(self, hvac_mode):
+    def set_hvac_mode(self, hvac_mode):
         self._current_operation = hvac_mode
-        await self.send_update_state()
+        self.send_update_state()
 
     async def async_set_fan_mode(self, fan_mode):
         self._current_fan_mode = fan_mode
