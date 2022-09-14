@@ -95,7 +95,7 @@ class LGAircon(ClimateEntity):
             res = requests.get(api_url)
             temp = res.json()
             self._current_temp = temp
-        except requests.exceptions.RequestException as e
+        except requests.exceptions.RequestException as e:
             print("Failed to fetch temperature {}", e)
 
     def send_update_state(self):
@@ -108,7 +108,7 @@ class LGAircon(ClimateEntity):
 
         try:
             requests.post(api_url, json=state)
-        except requests.exceptions.RequestException as e
+        except requests.exceptions.RequestException as e:
             print("Failed to fetch temperature {}", e)
 
     async def async_update(self):
