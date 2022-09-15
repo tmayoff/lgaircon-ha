@@ -45,7 +45,7 @@ def HVACModeToString(hvac_mode):
     elif hvac_mode == HVACMode.HEAT:
         return "Heat"
     elif hvac_mode == HVACMode.COOL:
-        return "AC"
+        return "Cool"
     elif hvac_mode == HVACMode.DRY:
         return "Dehumidifier"
     elif hvac_mode == HVACMode.FAN_ONLY:
@@ -75,11 +75,9 @@ class LGAircon(ClimateEntity):
         self._attr_max_temp = 30
 
         self._current_temp = None
-        self._current_humidity = None
 
-        self._current_fan_mode = FAN_LOW
+        self._current_fan_mode = FAN_HIGH
         self._current_operation = HVACMode.OFF
-        self._current_swing_mode = SWING_OFF
         self._target_temp = 20
         self._attr_target_temperature_high = None
         self._attr_target_temperature_low = None
@@ -88,12 +86,10 @@ class LGAircon(ClimateEntity):
         self._attr_temperature_unit = TEMP_CELSIUS
         self._attr_hvac_mode = HVACMode.OFF
 
-        self._attr_fan_modes = [FAN_ON, FAN_OFF, FAN_LOW, FAN_MEDIUM, FAN_HIGH]
-        self._attr_fan_mode = FAN_OFF
         self._attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.COOL, HVACMode.DRY, HVACMode.FAN_ONLY]
 
         self._attr_supported_features = 0
-        self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
+        # self._attr_supported_features |= ClimateEntityFeature.FAN_MODE
         self._attr_supported_features |= ClimateEntityFeature.TARGET_TEMPERATURE
 
     def fetch_state(self):
@@ -110,7 +106,7 @@ class LGAircon(ClimateEntity):
                 self._current_operation = HVACMode.COOL
             elif mode == "Heat":
                 self._current_operation = HVACMode.HEAT
-            elif mode == "Dehum":
+            elif mode == "Dehumidifier":
                 self._current_operation = HVACMode.DRY
             elif mode == "Fan":
                 self._current_operation = HVACMode.FAN_ONLY
@@ -130,19 +126,18 @@ class LGAircon(ClimateEntity):
         api_url = "http://10.0.0.84:8000/state"
         state = {
             'updated': True,
-            'mode': self._current_operation,
+            'mode': HVACModeToString(self._current_operation),
             'min_temp': self._attr_min_temp,
             'max_temp': self._attr_max_temp,
             'target_temp': self._target_temp,
             'fan_speed': 0,
             'fan_mode': FANModeToString(self._current_fan_mode),
-            'mode': HVACModeToString(self._current_operation)
             }
 
         try:
             requests.post(api_url, json=state)
         except requests.RequestException as e:
-            print(str(e))
+            print("Error send update")
 
     async def async_update(self):
         try:
@@ -163,9 +158,9 @@ class LGAircon(ClimateEntity):
     def target_temperature(self):
         return self._target_temp
 
-    @property
-    def fan_mode(self):
-        return self._current_fan_mode
+    # @property
+    # def fan_mode(self):
+    #     return self._current_fan_mode
 
     @property
     def hvac_mode(self):
@@ -175,9 +170,9 @@ class LGAircon(ClimateEntity):
         self._current_operation = hvac_mode
         self.send_update_state()
 
-    def set_fan_mode(self, fan_mode):
-        self._current_fan_mode = fan_mode
-        self.send_update_state()
+    # def set_fan_mode(self, fan_mode):
+    #     self._current_fan_mode = fan_mode
+    #     self.send_update_state()
 
     def set_temperature(self, **kwargs):
         # TODO update target temperature
