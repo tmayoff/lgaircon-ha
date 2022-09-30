@@ -78,15 +78,15 @@ class LGAircon(ClimateEntity):
         self._target_temp = state["target_temp"]
 
         mode = state["mode"]
-        if mode == "Off":
+        if mode == "OFF":
             self._current_operation = HVACMode.OFF
-        elif mode == "Cool":
+        elif mode == "AC":
             self._current_operation = HVACMode.COOL
-        elif mode == "Heat":
+        elif mode == "HEAT":
             self._current_operation = HVACMode.HEAT
-        elif mode == "Dehum":
+        elif mode == "DEHUM":
             self._current_operation = HVACMode.DRY
-        elif mode == "Fan":
+        elif mode == "FAN":
             self._current_operation = HVACMode.FAN_ONLY
 
     def fetch_temperature(self):
