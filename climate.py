@@ -40,15 +40,15 @@ async def async_setup_platform(
 
 def HVACModeToString(hvac_mode):
     if hvac_mode == HVACMode.OFF:
-        return "Off"
+        return "OFF"
     elif hvac_mode == HVACMode.HEAT:
-        return "Heat"
+        return "HEAT"
     elif hvac_mode == HVACMode.COOL:
-        return "Cool"
+        return "COOl"
     elif hvac_mode == HVACMode.DRY:
-        return "Dehumidifier"
+        return "DEHUM"
     elif hvac_mode == HVACMode.FAN_ONLY:
-        return "Fan"
+        return "FAN"
 
 def FANModeToString(fan_mode):
     if fan_mode == FAN_ON:
@@ -56,11 +56,11 @@ def FANModeToString(fan_mode):
     elif fan_mode == FAN_OFF:
         return ""
     elif fan_mode == FAN_LOW:
-        return "Low"
+        return "LOW"
     elif fan_mode == FAN_MEDIUM:
-        return "Medium"
+        return "MEDIUM"
     elif fan_mode == FAN_HIGH:
-        return "High"
+        return "HIGH"
 
 class LGAircon(ClimateEntity):
     _attr_has_entity_name = True
