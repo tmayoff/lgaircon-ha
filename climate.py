@@ -97,15 +97,15 @@ class LGAircon(ClimateEntity):
             _LOGGER.info(state)
             self._target_temp = state["target_temp"]
             mode = state["mode"]
-            if mode == "Off":
+            if mode == "OFF":
                 self._current_operation = HVACMode.OFF
-            elif mode == "Cool":
+            elif mode == "AC":
                 self._current_operation = HVACMode.COOL
-            elif mode == "Heat":
+            elif mode == "HEAT":
                 self._current_operation = HVACMode.HEAT
-            elif mode == "Dehumidifier":
+            elif mode == "DEHUM":
                 self._current_operation = HVACMode.DRY
-            elif mode == "Fan":
+            elif mode == "FAN":
                 self._current_operation = HVACMode.FAN_ONLY
         except requests.RequestException as e:
             print(str(e))
@@ -173,7 +173,6 @@ class LGAircon(ClimateEntity):
     #     self.send_update_state()
 
     def set_temperature(self, **kwargs):
-        # TODO update target temperature
         _LOGGER.info("Setting target temperature: %s", kwargs['temperature'])
         self._target_temp = kwargs['temperature']
         self.send_update_state()
